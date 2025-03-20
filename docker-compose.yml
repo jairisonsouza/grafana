@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+  # Banco de dados PostgreSQL para o Zabbix
+  grafana-db:
+    image: postgres:17
+    container_name: grafana-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_DB_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+    volumes:
+      - grafana-db-data:/var/lib/postgresql/data
+    networks:
+      - grafana-net
+
+  # Grafana
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: always
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_DATABASE_TYPE: postgres
+      GF_DATABASE_HOST: grafana-db
+      GF_DATABASE_NAME: ${POSTGRES_DATABASE}
+      GF_DATABASE_USER: ${POSTGRES_DB_USER}
+      GF_DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana.ini:/etc/grafana/grafana.ini
+      - ./ldap.toml:/etc/grafana/ldap.toml
+    depends_on:
+      - grafana-db
+    ports:
+      - "3000:3000"
+    networks:
+      - grafana-net
+
+volumes:
+  postgres_data:
+
+networks:
+  grafana-net:
