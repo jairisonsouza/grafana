@@ -28,7 +28,7 @@ Define os serviços:
 ## Como Utilizar
 
 ### 1. Configurar Variáveis de Ambiente
-Crie um arquivo `.env` no mesmo diretório do `docker-compose.yml` com as seguintes variáveis:
+Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
 ```
 POSTGRES_DB_USER=seu_usuario
 POSTGRES_PASSWORD=sua_senha

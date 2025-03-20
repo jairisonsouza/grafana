@@ -14,6 +14,8 @@ services:
       - grafana-db-data:/var/lib/postgresql/data
     networks:
       - grafana-net
+    env_file:
+      - ../.env
 
   grafana:
     image: grafana/grafana:latest
@@ -43,6 +45,8 @@ services:
     networks:
       - grafana-net
       - traefik-net
+    env_file:
+      - ../.env
 
 volumes:
   postgres_data:
